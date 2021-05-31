@@ -1,7 +1,5 @@
 const express = require('express');
 const app = new express();
-
-// Assignment
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -34,19 +32,18 @@ app.get("/url/emotion", (req,res) => {
 	const analyzeParams = {
 		url: req.query.url,
 		features: {
-			emotion: {
-                document: true
-            },
+			emotion: {},
 		},
 	};
 	getNLUInstance()
 		.analyze(analyzeParams)
-		.then((analysisResults) => {
-			res.send(analysisResults.result.emotion.document.emotion);
+		.then((analyzeResults) => {
+			return res.send(analyzeResults.result.emotion.document.emotion);
 		})
 		.catch((err) => {
-			console.log('error:', err);
-		});
+            console.log('error:', err);
+            return res.send("error");
+    	});
     //return res.send({"happy":"90","sad":"10"});
 });
 
@@ -54,18 +51,17 @@ app.get("/url/sentiment", (req,res) => {
 	const analyzeParams = {
 		url: req.query.url,
 		features: {
-			sentiment: {
-                document: true
-            },
+			sentiment: {},
 		},
 	};
 	getNLUInstance()
 		.analyze(analyzeParams)
-		.then((analysisResults) => {
-			return res.send(analysisResults.result.sentiment.document.label);
+		.then((analyzeResults) => {
+			return res.send(analyzeResults.result.sentiment.document.label);
 		})
 		.catch((err) => {
-			console.log('error:', err);
+            console.log('error:', err);
+            return res.send("error");
 		});
     //return res.send("url sentiment for "+req.query.url);
 });
@@ -74,19 +70,17 @@ app.get("/text/emotion", (req,res) => {
 	const analyzeParams = {
 		text: req.query.text,
 		features: {
-			emotion: {
-                document: true
-            },
+			emotion: {},
 		},
 	};
 	getNLUInstance()
 		.analyze(analyzeParams)
-		.then((analysisResults) => {
-			// console.log(JSON.stringify(analysisResults.result, null, 2));
-			res.send(analysisResults.result.emotion.document.emotion);
+		.then((analyzeResults) => {
+			return res.send(analyzeResults.result.emotion.document.emotion);
 		})
 		.catch((err) => {
-			console.log('error:', err);
+            console.log('error:', err);
+            return res.send("error");
 		});
     //return res.send({"happy":"10","sad":"90"});
 });
@@ -95,22 +89,21 @@ app.get("/text/sentiment", (req,res) => {
 	const analyzeParams = {
 		text: req.query.text,
 		features: {
-			sentiment: {
-                document: true
-             },
+			sentiment: {},
 		},
 	};
 	getNLUInstance()
 		.analyze(analyzeParams)
-		.then((analysisResults) => {
-			res.send(analysisResults.result.sentiment.document.label);
+		.then((analyzeResults) => {
+			return res.send(analyzeResults.result.sentiment.document.label);
 		})
 		.catch((err) => {
-			console.log('error:', err);
+            console.log('error:', err);
+            return res.send("error");
 		});
     //return res.send("text sentiment for "+req.query.text);
 });
 
-let server = app.listen(8080, () => {
+let server = app.listen(8081, () => {
     console.log('Listening', server.address().port)
 })
